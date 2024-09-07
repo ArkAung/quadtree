@@ -19,7 +19,7 @@ Add `quadtree` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  quadtree: ^1.0.0
+  quadtree: ^0.1.0
 ```
 
 Then run:
