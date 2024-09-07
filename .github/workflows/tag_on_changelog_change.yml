@@ -1,0 +1,50 @@
+name: Tag on Version Change in CHANGELOG
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
+
+      - name: Check for CHANGELOG changes
+        id: changelog_check
+        run: |
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "CHANGELOG.md"; then
+            echo "CHANGELOG.md was updated"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "CHANGELOG.md was not updated"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Extract version from CHANGELOG.md
+        if: steps.changelog_check.outputs.changed == 'true'
+        id: extract_version
+        run: |
+          # Extract version number from the first line matching the pattern ## [X.Y.Z]
+          VERSION=$(grep -oP '^## \[\K[0-9]+\.[0-9]+\.[0-9]+' CHANGELOG.md | head -n 1)
+          if [ -z "$VERSION" ]; then
+            echo "No version found in CHANGELOG.md"
+            exit 1
+          fi
+          echo "Found version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create Git tag
+        if: steps.extract_version.outputs.version != ''
+        run: |
+          VERSION=${{ steps.extract_version.outputs.version }}
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git tag "v$VERSION" -m "Release version $VERSION from CHANGELOG.md"
+          git push origin "v$VERSION"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
