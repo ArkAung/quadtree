@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Quadtree - Efficient Spatial Partitioning for Dart</title>
+  <style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --text-color: #333;
+        --background-color: #ecf0f1;
+        --card-background: #ffffff;
+    }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: var(--background-color);
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 1100px;
+        margin: auto;
+        overflow: hidden;
+        padding: 0 20px;
+    }
+    header {
+        background: var(--primary-color);
+        color: #fff;
+        padding-top: 30px;
+        min-height: 70px;
+        border-bottom: var(--secondary-color) 3px solid;
+    }
+    header a {
+        color: #fff;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 16px;
+    }
+    header .highlight, header .current a {
+        color: var(--secondary-color);
+        font-weight: bold;
+    }
+    header #branding {
+        float: left;
+    }
+    header #branding h1 {
+        margin: 0;
+    }
+    header nav {
+        float: right;
+        margin-top: 10px;
+    }
+    header .highlight {
+        color: var(--secondary-color);
+        font-weight: bold;
+    }
+    header a:hover {
+        color: var(--accent-color);
+        font-weight: bold;
+    }
+    #showcase {
+        min-height: 400px;
+        background: linear-gradient(rgba(44, 62, 80, 0.7), rgba(44, 62, 80, 0.7)), url('https://source.unsplash.com/random/1600x900/?technology') no-repeat center center/cover;
+        text-align: center;
+        color: #fff;
+    }
+    #showcase h1 {
+        margin-top: 100px;
+        font-size: 55px;
+        margin-bottom: 10px;
+    }
+    #showcase p {
+        font-size: 20px;
+    }
+    #features {
+        margin-top: 20px;
+    }
+    #features .box {
+        float: left;
+        text-align: center;
+        width: 30%;
+        padding: 10px;
+        background: var(--card-background);
+        margin: 1%;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .feature-icon {
+        font-size: 48px;
+        color: var(--secondary-color);
+        margin-bottom: 15px;
+    }
+    .button {
+        display: inline-block;
+        font-size: 18px;
+        color: #ffffff;
+        background: var(--secondary-color);
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    .button:hover {
+        background: var(--accent-color);
+    }
+    #demo {
+        background: var(--card-background);
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    #demo-canvas {
+        border: 1px solid #ddd;
+        display: block;
+        margin: 0 auto;
+    }
+    footer {
+        padding: 20px;
+        margin-top: 20px;
+        color: #ffffff;
+        background-color: var(--primary-color);
+        text-align: center;
+    }
+</style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div id="branding">
+        <h1><span class="highlight">Quadtree</span> Package</h1>
+      </div>
+      <nav>
+        <ul>
+          <li class="current"><a href="#home">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#demo">Demo</a></li>
+          <li><a href="https://github.com/arkaung/quadtree">GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section id="showcase">
+    <div class="container">
+      <h1>Efficient Spatial Partitioning for Dart</h1>
+      <p>Optimize your 2D space queries with our high-performance Quadtree implementation</p>
+      <a href="#demo" class="button">See it in action</a>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="container">
+        <div class="box">
+            <i class="fas fa-bolt feature-icon"></i>
+            <h3>Lightning Fast</h3>
+            <p>Optimized algorithms for quick insertion and querying of spatial data.</p>
+        </div>
+        <div class="box">
+            <i class="fas fa-cogs feature-icon"></i>
+            <h3>Highly Flexible</h3>
+            <p>Customizable capacity and easy integration with any Dart or Flutter project.</p>
+        </div>
+        <div class="box">
+            <i class="fas fa-check-circle feature-icon"></i>
+            <h3>Well Tested</h3>
+            <p>Comprehensive test suite ensuring reliability and performance.</p>
+        </div>
+    </div>
+</section>
+
+  <div class="container">
+    <section id="demo">
+      <h2>Interactive Demo</h2>
+      <p>Click on the canvas to add points. Use the mouse to create a query rectangle.</p>
+      <canvas id="demo-canvas" width="400" height="400"></canvas>
+    </section>
+  </div>
+
+  <footer>
+    <p>Quadtree Package, Copyright &copy; 2024</p>
+  </footer>
+
+  <script>
+    // Quadtree implementation (remains unchanged)
+    class Point {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+      }
+    }
+
+    class Rectangle {
+      constructor(x, y, w, h) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+      }
+
+      contains(point) {
+        return (point.x >= this.x && point.x < this.x + this.w &&
+          point.y >= this.y && point.y < this.y + this.h);
+      }
+
+      intersects(range) {
+        return !(range.x > this.x + this.w ||
+          range.x + range.w < this.x ||
+          range.y > this.y + this.h ||
+          range.y + range.h < this.y);
+      }
+    }
+
+    class Quadtree {
+      constructor(boundary, capacity) {
+        this.boundary = boundary;
+        this.capacity = capacity;
+        this.points = [];
+        this.divided = false;
+      }
+
+      subdivide() {
+        let x = this.boundary.x;
+        let y = this.boundary.y;
+        let w = this.boundary.w / 2;
+        let h = this.boundary.h / 2;
+
+        let ne = new Rectangle(x + w, y, w, h);
+        this.northeast = new Quadtree(ne, this.capacity);
+        let nw = new Rectangle(x, y, w, h);
+        this.northwest = new Quadtree(nw, this.capacity);
+        let se = new Rectangle(x + w, y + h, w, h);
+        this.southeast = new Quadtree(se, this.capacity);
+        let sw = new Rectangle(x, y + h, w, h);
+        this.southwest = new Quadtree(sw, this.capacity);
+
+        this.divided = true;
+      }
+
+      insert(point) {
+        if (!this.boundary.contains(point)) {
+          return false;
+        }
+
+        if (this.points.length < this.capacity) {
+          this.points.push(point);
+          return true;
+        }
+
+        if (!this.divided) {
+          this.subdivide();
+        }
+
+        return (this.northeast.insert(point) || this.northwest.insert(point) ||
+          this.southeast.insert(point) || this.southwest.insert(point));
+      }
+
+      query(range, found) {
+        if (!found) {
+          found = [];
+        }
+
+        if (!this.boundary.intersects(range)) {
+          return found;
+        }
+
+        for (let p of this.points) {
+          if (range.contains(p)) {
+            found.push(p);
+          }
+        }
+
+        if (this.divided) {
+          this.northwest.query(range, found);
+          this.northeast.query(range, found);
+          this.southwest.query(range, found);
+          this.southeast.query(range, found);
+        }
+
+        return found;
+      }
+    }
+
+    // Demo
+    document.addEventListener('DOMContentLoaded', function () {
+      const canvas = document.getElementById('demo-canvas');
+      const ctx = canvas.getContext('2d');
+      const qtree = new Quadtree(new Rectangle(0, 0, 400, 400), 4);
+      let mousePos = { x: 0, y: 0 };
+      let isDrawing = false;
+      let startPos = { x: 0, y: 0 };
+
+      function getMousePos(canvas, event) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+        };
+      }
+
+      canvas.addEventListener('click', function (event) {
+        const pos = getMousePos(canvas, event);
+        qtree.insert(new Point(pos.x, pos.y));
+        drawQuadtree();
+      });
+
+      canvas.addEventListener('mousedown', function (event) {
+        startPos = getMousePos(canvas, event);
+        isDrawing = true;
+      });
+
+      canvas.addEventListener('mousemove', function (event) {
+        mousePos = getMousePos(canvas, event);
+        if (isDrawing) {
+          drawQuadtree();
+        }
+      });
+
+      canvas.addEventListener('mouseup', function () {
+        isDrawing = false;
+        drawQuadtree();
+      });
+
+      function drawQuadtree() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw all points
+        ctx.fillStyle = 'blue';
+        qtree.query(new Rectangle(0, 0, 400, 400)).forEach(point => {
+          ctx.beginPath();
+          ctx.arc(point.x, point.y, 2, 0, 2 * Math.PI);
+          ctx.fill();
+        });
+
+        // Draw query rectangle
+        if (isDrawing) {
+          ctx.strokeStyle = 'red';
+          ctx.strokeRect(startPos.x, startPos.y, mousePos.x - startPos.x, mousePos.y - startPos.y);
+
+          // Highlight points in query range
+          const range = new Rectangle(
+            Math.min(startPos.x, mousePos.x),
+            Math.min(startPos.y, mousePos.y),
+            Math.abs(mousePos.x - startPos.x),
+            Math.abs(mousePos.y - startPos.y)
+          );
+          ctx.fillStyle = 'red';
+          qtree.query(range).forEach(point => {
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, 4, 0, 2 * Math.PI);
+            ctx.fill();
+          });
+        }
+      }
+
+      // Initial draw
+      drawQuadtree();
+    });
+  </script>
+</body>
+
+</html>
