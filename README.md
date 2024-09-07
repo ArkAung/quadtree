@@ -1,8 +1,10 @@
 # Quadtree
 
 [![Pub Version](https://img.shields.io/pub/v/quadtree.svg)](https://pub.dev/packages/quadtree)
-[![Build Status](https://github.com/yourusername/quadtree/workflows/Dart/badge.svg)](https://github.com/yourusername/quadtree/actions)
+[![Dart SDK Version](https://badgen.net/pub/sdk-version/quadtree)](https://pub.dev/packages/quadtree)
+[![codecov](https://codecov.io/gh/arkaung/quadtree/branch/main/graph/badge.svg)](https://codecov.io/gh/arkaung/quadtree)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Pub Points](https://img.shields.io/pub/points/quadtree)](https://pub.dev/packages/quadtree/score)
 
 A fast and efficient quadtree implementation in Dart for spatial partitioning and range queries.
 
